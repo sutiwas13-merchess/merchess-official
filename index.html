@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="MERCHESS — Premium automotive fragrance. กลิ่นหอมที่สะท้อนตัวตนของคุณ">
+  <title>MERCHESS | Premium Automotive Fragrance</title>
+  <style>
+    :root{--bg:#090909;--panel:#121212;--gold:#d7b56d;--gold2:#f4dfaa;--muted:#aaa49a;--line:rgba(215,181,109,.25);--white:#f7f4ed}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:84px}
+    body{margin:0;background:var(--bg);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif;line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    button,a{-webkit-tap-highlight-color:transparent}
+    .wrap{width:min(1120px,100% - 36px);margin:auto}
+    .topline{height:3px;background:linear-gradient(90deg,#8b682e,var(--gold2),#8b682e)}
+    header{position:sticky;top:0;z-index:20;background:rgba(9,9,9,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);padding-top:env(safe-area-inset-top)}
+    .nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{font-size:22px;letter-spacing:.22em;font-weight:800;color:var(--gold2)}
+    .brand small{display:block;font-size:8px;letter-spacing:.3em;color:#aaa;margin-top:-3px;font-weight:500}
+    .navlinks{display:flex;align-items:center;gap:20px;font-size:13px;color:#d8d3c9}
+    .navlinks a:hover{color:var(--gold2)}
+    .navcta{border:1px solid var(--gold);padding:9px 13px;border-radius:2px;color:var(--gold2)!important}
+    .hero{position:relative;overflow:hidden;min-height:640px;display:grid;align-items:center;background:radial-gradient(ellipse at 72% 45%,rgba(163,120,48,.16),transparent 38%),linear-gradient(110deg,#090909 30%,#11100d 100%)}
+    .hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(9,9,9,.1),transparent 65%),repeating-linear-gradient(120deg,transparent 0 74px,rgba(255,255,255,.018) 75px 76px)}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;padding:62px 0 72px}
+    .eyebrow{color:var(--gold);letter-spacing:.24em;text-transform:uppercase;font-size:11px;font-weight:700}
+    h1{font-size:clamp(38px,6vw,68px);line-height:1.08;letter-spacing:-.04em;margin:18px 0}
+    h1 span{color:var(--gold2);display:block}
+    .lead{max-width:470px;color:#c0bbb1;font-size:16px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .btn{min-height:48px;padding:13px 20px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:13px;border:1px solid var(--gold);transition:.2s}
+    .btn-primary{background:linear-gradient(135deg,#f0d89c,#b68b42);color:#17130b;border-color:transparent}
+    .btn-outline{color:var(--gold2);background:transparent}
+    .btn:active{transform:scale(.98)}
+    .note{font-size:11px;color:#827d73;margin-top:18px}
+    .product-stage{position:relative;min-height:390px;display:grid;place-items:center}
+    .halo{position:absolute;width:min(360px,85vw);aspect-ratio:1;border-radius:50%;border:1px solid rgba(215,181,109,.2);box-shadow:0 0 80px rgba(215,181,109,.08),inset 0 0 70px rgba(215,181,109,.04)}
+    .halo:before,.halo:after{content:"";position:absolute;border:1px solid rgba(215,181,109,.13);border-radius:50%;inset:22px}
+    .halo:after{inset:48px}
+    .bottle{position:relative;z-index:2;width:190px;height:280px;border-radius:13px 13px 22px 22px;background:linear-gradient(100deg,#090909,#25231d 18%,#10100e 42%,#2e291e 65%,#080808);border:1px solid #9a7a43;box-shadow:22px 28px 38px rgba(0,0,0,.7),inset 0 0 0 5px rgba(255,255,255,.025),inset 7px 0 13px rgba(255,255,255,.06);transform:perspective(800px) rotateY(-8deg)}
+    .bottle:before{content:"";position:absolute;width:76px;height:30px;left:56px;top:-29px;background:linear-gradient(90deg,#25231e,#9a7a43,#171510);border:1px solid #a88b50;border-radius:4px 4px 1px 1px}
+    .bottle:after{content:"";position:absolute;left:16px;right:16px;top:17px;height:1px;background:rgba(255,255,255,.15)}
+    .b-label{position:absolute;left:14px;right:14px;top:82px;bottom:43px;border:1px solid rgba(215,181,109,.65);display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(215,181,109,.06),rgba(0,0,0,.3));text-align:center}
+    .b-label strong{font-size:20px;letter-spacing:.2em;color:var(--gold2)}
+    .b-label span{font-size:7px;letter-spacing:.23em;color:#d2c5a5;margin-top:7px}
+    .b-label i{width:26px;height:1px;background:var(--gold);margin:15px}
+    .b-label small{font-size:8px;letter-spacing:.16em;color:#b4a47f}
+    .stage-caption{position:absolute;bottom:2px;letter-spacing:.2em;font-size:9px;color:#8d805f}
+    .trustbar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0d0d0c}
+    .trustgrid{display:grid;grid-template-columns:repeat(3,1fr);padding:19px 0;gap:10px}
+    .trustitem{text-align:center;font-size:11px;color:#c7c0b3;letter-spacing:.04em}
+    .trustitem b{display:block;color:var(--gold2);font-size:12px;margin-bottom:3px}
+    section{padding:78px 0}
+    .section-head{text-align:center;max-width:620px;margin:0 auto 36px}
+    .section-head h2{font-size:clamp(27px,4vw,40px);line-height:1.2;margin:10px 0 12px}
+    .section-head p{color:var(--muted);font-size:14px;margin:0}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .feature{border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,#151513,#0d0d0c);padding:24px 21px;min-height:174px}
+    .feature .num{font-size:11px;color:var(--gold);letter-spacing:.18em}
+    .feature h3{font-size:17px;margin:18px 0 7px}
+    .feature p{font-size:13px;color:#a9a49a;margin:0}
+    .product{background:linear-gradient(180deg,#0b0b0a,#11100d 50%,#090909)}
+    .product-card{max-width:850px;margin:auto;border:1px solid var(--line);display:grid;grid-template-columns:.8fr 1.2fr;background:rgba(255,255,255,.02)}
+    .product-visual{min-height:290px;display:grid;place-items:center;background:radial-gradient(circle,rgba(215,181,109,.12),transparent 68%)}
+    .mini-bottle{width:105px;height:165px;position:relative;background:linear-gradient(100deg,#090909,#333026 35%,#111);border:1px solid #a9894e;border-radius:7px 7px 12px 12px;box-shadow:12px 20px 28px #000}
+    .mini-bottle:before{content:"";position:absolute;width:44px;height:18px;top:-17px;left:30px;background:linear-gradient(90deg,#24221b,#aa8b4d,#191710);border:1px solid #9d7d43}
+    .mini-bottle:after{content:"MERCHESS";position:absolute;top:65px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.12em;color:var(--gold2);border-top:1px solid #9b7d43;border-bottom:1px solid #9b7d43;padding:8px 0}
+    .product-info{padding:32px 30px;align-self:center}
+    .product-info h3{font-size:26px;margin:8px 0}
+    .product-info p{font-size:14px;color:#aaa49a}
+    .pill{display:inline-block;border:1px solid var(--line);padding:5px 9px;color:var(--gold2);font-size:10px;letter-spacing:.08em;margin:4px 4px 12px 0}
+    .contact{background:radial-gradient(ellipse at center,rgba(156,116,48,.12),transparent 65%)}
+    .contact-inner{border:1px solid var(--line);padding:42px 24px;text-align:center;background:rgba(14,14,12,.72)}
+    .contact-inner h2{font-size:clamp(26px,4vw,38px);margin:10px 0}
+    .contact-inner p{color:#b0aa9f;font-size:14px;max-width:540px;margin:0 auto 22px}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 0 calc(28px + env(safe-area-inset-bottom));color:#89847b;font-size:11px}
+    .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .foot .brand{font-size:17px}
+    .mobile-bar{display:none}
+    @media(max-width:720px){
+      .wrap{width:min(100% - 30px,520px)}
+      .nav{min-height:62px}
+      .brand{font-size:19px}
+      .navlinks{gap:12px;font-size:12px}
+      .navlinks a:not(.navcta){display:none}
+      .navcta{padding:8px 11px}
+      .hero{min-height:auto}
+      .hero-grid{grid-template-columns:1fr;gap:8px;padding:52px 0 32px}
+      h1{font-size:43px;margin:14px 0}
+      .lead{font-size:14px}
+      .product-stage{min-height:330px;margin-top:6px}
+      .bottle{transform:scale(.86) perspective(800px) rotateY(-8deg)}
+      .halo{width:285px}
+      .trustgrid{padding:16px 0;gap:6px}
+      .trustitem{font-size:9px}
+      .trustitem b{font-size:10px}
+      section{padding:58px 0}
+      .features{grid-template-columns:1fr;gap:10px}
+      .feature{min-height:0;padding:20px}
+      .feature h3{margin:11px 0 5px}
+      .product-card{grid-template-columns:1fr}
+      .product-visual{min-height:220px}
+      .product-info{padding:10px 22px 25px}
+      .contact-inner{padding:34px 18px}
+      .mobile-bar{position:fixed;z-index:30;bottom:0;left:0;right:0;display:flex;gap:10px;padding:10px 15px calc(10px + env(safe-area-inset-bottom));background:rgba(8,8,8,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+      .mobile-bar .btn{flex:1;min-height:44px;padding:10px;font-size:12px}
+      footer{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#home" aria-label="MERCHESS หน้าแรก">MERCHESS<small>PREMIUM AUTOMOTIVE FRAGRANCE</small></a>
+      <nav class="navlinks" aria-label="เมนูหลัก">
+        <a href="#story">จุดเด่น</a><a href="#product">สินค้า</a><a class="navcta" href="#contact">ติดต่อเรา</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Drive with distinction</div>
+          <h1>กลิ่นที่ใช่<br><span>สะท้อนตัวตน</span></h1>
+          <p class="lead">เติมเต็มทุกการเดินทางด้วยบรรยากาศที่มีระดับ น้ำหอมปรับอากาศรถยนต์ MERCHESS — เรียบหรู สปอร์ต และมีเอกลักษณ์ในแบบของคุณ</p>
+          <div class="actions"><a class="btn btn-primary" href="#product">ค้นพบ MERCHESS <span aria-hidden="true">↗</span></a><a class="btn btn-outline" href="#story">รู้จักแบรนด์</a></div>
+          <p class="note">A signature atmosphere for every journey.</p>
+        </div>
+        <div class="product-stage" role="img" aria-label="ภาพกราฟิกขวดน้ำหอมรถยนต์ MERCHESS สีดำและทอง">
+          <div class="halo"></div>
+          <div class="bottle"><div class="b-label"><strong>MERCHESS</strong><span>AUTOMOTIVE FRAGRANCE</span><i></i><small>DRIVE YOUR SIGNATURE</small></div></div>
+          <div class="stage-caption">CRAFTED FOR YOUR DRIVE</div>
+        </div>
+      </div>
+    </section>
+    <div class="trustbar"><div class="wrap trustgrid">
+      <div class="trustitem"><b>01 / DESIGN</b>ดีไซน์ดำ–ทองเหนือกาลเวลา</div>
+      <div class="trustitem"><b>02 / MOOD</b>สร้างบรรยากาศในทุกเส้นทาง</div>
+      <div class="trustitem"><b>03 / IDENTITY</b>รายละเอียดที่สะท้อนตัวคุณ</div>
+    </div></div>
+    <section id="story">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">The MERCHESS standard</div><h2>ความหรูหรา อยู่ในรายละเอียด</h2><p>เราเชื่อว่าประสบการณ์การขับขี่ไม่ได้มีแค่สิ่งที่มองเห็น แต่รวมถึงบรรยากาศที่คุณสัมผัสได้ทุกครั้งที่เปิดประตูรถ</p></div>
+        <div class="features">
+          <article class="feature"><div class="num">01 — FORM</div><h3>เรียบหรู มีคาแรกเตอร์</h3><p>โทนสีดำและทองที่ให้ความรู้สึกพรีเมียม เข้ากับห้องโดยสารหลากหลายสไตล์</p></article>
+          <article class="feature"><div class="num">02 — FEELING</div><h3>เปลี่ยนบรรยากาศการเดินทาง</h3><p>เติมความรู้สึกสดใหม่ให้ช่วงเวลาบนรถ กลายเป็นพื้นที่ที่เป็นตัวคุณ</p></article>
+          <article class="feature"><div class="num">03 — SIGNATURE</div><h3>รายละเอียดที่เป็นเอกลักษณ์</h3><p>ออกแบบภาพลักษณ์ให้โดดเด่น โดยไม่ต้องพยายามมากเกินไป</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="product" id="product">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">Meet your signature</div><h2>MERCHESS Car Fragrance</h2><p>ความหอมที่เติมเต็มสไตล์การขับขี่ของคุณ</p></div>
+        <div class="product-card">
+          <div class="product-visual"><div class="mini-bottle" role="img" aria-label="กราฟิกขวด MERCHESS"></div></div>
+          <div class="product-info"><div class="eyebrow">Premium collection</div><h3>Make every drive yours.</h3><p>พบกับน้ำหอมปรับอากาศรถยนต์ MERCHESS ดีไซน์พรีเมียมที่ตั้งใจออกแบบมาเพื่อคนที่ใส่ใจทุกดีเทล</p><div><span class="pill">BLACK & GOLD</span><span class="pill">SPORT LUXURY</span><span class="pill">SIGNATURE STYLE</span></div><p>สนใจสินค้า กลิ่น และรายละเอียดการสั่งซื้อ ติดต่อทีมงานของเราได้โดยตรง</p><a class="btn btn-primary" href="#contact">สอบถามสินค้า <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </div>
+    </section>
+    <section class="contact" id="contact">
+      <div class="wrap"><div class="contact-inner"><div class="eyebrow">Stay in touch</div><h2>พร้อมยกระดับทุกการเดินทาง?</h2><p>ติดต่อ MERCHESS เพื่อสอบถามข้อมูลสินค้า ราคา และช่องทางการสั่งซื้อ เราจะช่วยให้คุณเลือกสิ่งที่เหมาะกับสไตล์ของคุณ</p><a class="btn btn-primary" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">ติดตามบน TikTok ↗</a><p class="note">หมายเหตุ: กรุณาเปลี่ยนลิงก์ TikTok เป็นบัญชีทางการของแบรนด์ก่อนเปิดใช้งานจริง</p></div></div>
+    </section>
+  </main>
+  <footer><div class="wrap foot"><a class="brand" href="#home">MERCHESS</a><span>© <span id="year">2026</span> MERCHESS. All rights reserved.</span><span>Premium Automotive Fragrance</span></div></footer>
+  <div class="mobile-bar"><a class="btn btn-outline" href="#product">ดูสินค้า</a><a class="btn btn-primary" href="#contact">ติดต่อ MERCHESS</a></div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
