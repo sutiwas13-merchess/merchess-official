@@ -105,6 +105,24 @@
     .order-summary{display:none;margin-top:16px;padding:16px;border:1px solid var(--line);background:#0b0b09;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;color:#e9e1d0}
     .order-summary.show{display:block}
     .checkout-help{font-size:11px;color:#918b80;margin-top:10px}
+
+    .payment-demo{display:none;margin-top:22px;padding:18px;border:1px solid var(--line);background:linear-gradient(145deg,#15130e,#090909)}
+    .payment-demo.show{display:block}
+    .payment-demo h4{margin:0 0 6px;color:var(--gold2);font-size:18px}
+    .payment-demo p{font-size:12px;color:var(--muted)}
+    .demo-badge{display:inline-block;border:1px solid #8f713b;color:var(--gold2);font-size:10px;letter-spacing:.08em;padding:5px 8px;margin-bottom:12px}
+    .payment-layout{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center}
+    .fake-qr{position:relative;display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:180px;aspect-ratio:1;padding:9px;background:#fff;border:7px solid #fff;overflow:hidden}
+    .fake-qr span{background:#151515}
+    .fake-qr span:nth-child(3n),.fake-qr span:nth-child(7n+2),.fake-qr span:nth-child(11n+4){background:#fff}
+    .fake-qr:after{content:"ตัวอย่าง\A ใช้จ่ายจริงไม่ได้";white-space:pre;position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:13px;line-height:1.5;font-weight:900;color:#111;background:rgba(255,255,255,.9);border:3px dashed #9a793d}
+    .payment-demo label{display:block;color:#d8d0c0;font-size:12px;margin:14px 0}
+    .payment-demo input[type=file]{display:block;width:100%;margin-top:8px;padding:10px;border:1px solid #4c422e;background:#090909;color:var(--white);font:inherit}
+    .slip-preview{display:none;max-width:100%;max-height:260px;margin-top:12px;border:1px solid var(--line);object-fit:contain}
+    .slip-status{margin-top:12px;padding:10px;border:1px solid var(--line);color:var(--gold2);font-size:12px;display:none}
+    .slip-status.show{display:block}
+    @media(max-width:520px){.payment-layout{grid-template-columns:1fr}.fake-qr{margin:auto}.payment-copy{text-align:center}}
+
     @media(max-width:720px){.checkout-grid{grid-template-columns:1fr;gap:0}.checkout{margin-top:20px}.checkout .btn{width:100%}}
     @media(max-width:720px){
       .wrap{width:min(100% - 30px,520px)}
@@ -198,6 +216,27 @@
               <label>หมายเหตุถึงร้าน (ถ้ามี)<textarea id="buyerNote" name="buyerNote" maxlength="300" placeholder="เช่น ช่วงเวลาที่สะดวกรับสินค้า"></textarea></label>
               <button class="btn btn-primary" type="submit">สรุปคำสั่งซื้อ ↗</button>
             </form>
+
+            <div id="paymentDemo" class="payment-demo">
+              <span class="demo-badge">DEMO MODE • ยังไม่ใช่ระบบรับเงินจริง</span>
+              <h4>ชำระเงินด้วยการสแกน QR</h4>
+              <p>ตัวอย่างหน้าจอชำระเงินสำหรับทดสอบก่อนใส่ QR PromptPay จริง</p>
+              <div class="payment-layout">
+                <div class="fake-qr" id="fakeQr" aria-label="QR จำลองที่ใช้ชำระเงินจริงไม่ได้"></div>
+                <div class="payment-copy">
+                  <strong style="color:var(--gold2)">ยอดสินค้า ฿<span id="paymentAmount">0</span></strong>
+                  <p>1. เมื่อมี QR จริง ให้เปิดแอปธนาคารเพื่อสแกน</p>
+                  <p>2. แนบภาพสลิปด้านล่างเพื่อจำลองการส่งตรวจสอบ</p>
+                  <p>3. ร้านค้าต้องตรวจสอบยอดเงินในบัญชีจริงก่อนยืนยันชำระแล้ว</p>
+                </div>
+              </div>
+              <label>แนบสลิปโอนเงิน (รูปภาพ)<input id="slipFile" type="file" accept="image/*"></label>
+              <img id="slipPreview" class="slip-preview" alt="ตัวอย่างสลิปที่เลือก">
+              <button id="submitSlip" class="btn btn-primary" type="button">ส่งสลิปเพื่อตรวจสอบ (จำลอง)</button>
+              <div id="slipStatus" class="slip-status" role="status" aria-live="polite"></div>
+              <p class="checkout-help">ข้อจำกัดตอนนี้: รูปสลิปแสดงตัวอย่างในเบราว์เซอร์เท่านั้น ยังไม่ได้ส่งให้ร้านหรือบันทึกลงฐานข้อมูล และ QR นี้ใช้จ่ายเงินจริงไม่ได้</p>
+            </div>
+
             <div id="orderSummary" class="order-summary" role="status" aria-live="polite"></div>
             <button id="copyOrder" class="btn btn-outline" type="button" style="display:none;margin-top:12px">คัดลอกสรุปคำสั่งซื้อ</button>
             <p class="checkout-help">ระบบนี้ยังไม่มีฐานข้อมูลหรือส่งออเดอร์ถึงร้านอัตโนมัติ สรุปที่สร้างจะอยู่บนอุปกรณ์นี้ ให้คัดลอกแล้วส่งให้ร้านค้าเพื่อยืนยันออเดอร์</p>
@@ -273,8 +312,36 @@
       box.textContent=summary;
       box.classList.add('show');
       document.getElementById('copyOrder').style.display='inline-flex';
+      document.getElementById('paymentDemo').classList.add('show');
+      document.getElementById('paymentAmount').textContent=money(total);
+      document.getElementById('slipStatus').classList.remove('show');
+      document.getElementById('slipStatus').textContent='';
+      document.getElementById('slipFile').value='';
+      document.getElementById('slipPreview').style.display='none';
+      document.getElementById('slipPreview').removeAttribute('src');
       box.scrollIntoView({behavior:'smooth',block:'nearest'});
     }
+
+    // Deliberately non-scannable demo pattern; replace with the merchant's real PromptPay QR later.
+    (function(){const qr=document.getElementById('fakeQr');if(qr){for(let i=0;i<169;i++){const cell=document.createElement('span');cell.style.background=((i*17+i%7*13)%11<6)?'#151515':'#fff';qr.append(cell)}}})();
+    let selectedSlipData='';
+    document.getElementById('slipFile').addEventListener('change',e=>{
+      const file=e.target.files&&e.target.files[0];selectedSlipData='';
+      const preview=document.getElementById('slipPreview');
+      const status=document.getElementById('slipStatus');status.classList.remove('show');
+      if(!file){preview.style.display='none';return}
+      if(!file.type.startsWith('image/')){alert('กรุณาเลือกไฟล์รูปภาพ');e.target.value='';return}
+      if(file.size>5*1024*1024){alert('ไฟล์รูปต้องมีขนาดไม่เกิน 5 MB');e.target.value='';return}
+      const reader=new FileReader();reader.onload=()=>{selectedSlipData=String(reader.result||'');preview.src=selectedSlipData;preview.style.display='block'};reader.readAsDataURL(file);
+    });
+    document.getElementById('submitSlip').addEventListener('click',()=>{
+      const status=document.getElementById('slipStatus');
+      if(!document.getElementById('paymentDemo').classList.contains('show')){alert('กรุณากรอกข้อมูลและสรุปคำสั่งซื้อก่อน');return}
+      if(!selectedSlipData){alert('กรุณาเลือกภาพสลิปจำลองก่อน');return}
+      status.textContent='สถานะจำลอง: รับภาพสลิปไว้แสดงบนอุปกรณ์นี้แล้ว — ยังไม่ได้ส่งให้ร้านค้าตรวจสอบเงินจริง';
+      status.classList.add('show');
+    });
+
     document.getElementById('checkoutForm').addEventListener('submit',buildOrderSummary);
     document.getElementById('copyOrder').addEventListener('click',async()=>{
       const text=document.getElementById('orderSummary').textContent;
