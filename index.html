@@ -183,17 +183,41 @@
   <div class="mobile-bar"><a class="btn btn-outline" href="#product">ดูสินค้า</a><a class="btn btn-primary" href="#contact">ติดต่อ MERCHESS</a></div>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    const CART_KEY = 'merchessCartV1';
     const merchessProduct = {name:'น้ำหอมรถยนต์ MERCHESS กลิ่น MERMAXSPORT', price:189};
-    let cartQty = 0;
+    let cartItems = readCart();
+    function readCart(){ try { const data=JSON.parse(localStorage.getItem(CART_KEY)||'[]'); return Array.isArray(data)?data:[]; } catch(e){ return []; } }
+    function saveCart(){ localStorage.setItem(CART_KEY,JSON.stringify(cartItems)); renderCart(); }
+    function money(n){ return Number(n||0).toLocaleString('th-TH',{maximumFractionDigits:2}); }
     function renderCart(){
-      document.getElementById('cartCount').textContent = cartQty;
-      const contents = document.getElementById('cartContents');
-      if(cartQty === 0){ contents.innerHTML = '<p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p>'; return; }
-      contents.innerHTML = '<div class="cart-row"><div><strong>'+merchessProduct.name+'</strong><p class="cart-empty">฿'+merchessProduct.price+' / ชิ้น</p></div><div class="cart-actions"><button class="qty-btn" type="button" onclick="changeQty(-1)" aria-label="ลดจำนวน">−</button><strong>'+cartQty+'</strong><button class="qty-btn" type="button" onclick="changeQty(1)" aria-label="เพิ่มจำนวน">＋</button></div><div class="cart-total">รวม ฿'+(cartQty*merchessProduct.price).toLocaleString('th-TH')+'</div></div>';
+      const qty=cartItems.reduce((sum,item)=>sum+Number(item.qty||0),0);
+      document.getElementById('cartCount').textContent=qty;
+      const contents=document.getElementById('cartContents');
+      if(!cartItems.length){contents.innerHTML='<p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p>';return;}
+      contents.innerHTML='';
+      cartItems.forEach((item,index)=>{
+        const row=document.createElement('div');row.className='cart-row';row.style.marginBottom='16px';
+        const info=document.createElement('div');const name=document.createElement('strong');name.textContent=item.name;
+        const price=document.createElement('p');price.className='cart-empty';price.textContent='฿'+money(item.price)+' / ชิ้น';info.append(name,price);
+        const controls=document.createElement('div');controls.className='cart-actions';
+        const minus=document.createElement('button');minus.className='qty-btn';minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','ลดจำนวน');minus.onclick=()=>changeQty(item.id,-1);
+        const count=document.createElement('strong');count.textContent=item.qty;
+        const plus=document.createElement('button');plus.className='qty-btn';plus.type='button';plus.textContent='＋';plus.setAttribute('aria-label','เพิ่มจำนวน');plus.onclick=()=>changeQty(item.id,1);
+        const remove=document.createElement('button');remove.className='qty-btn';remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','ลบสินค้า');remove.onclick=()=>{cartItems=cartItems.filter(x=>x.id!==item.id);saveCart()};
+        controls.append(minus,count,plus,remove);
+        const subtotal=document.createElement('div');subtotal.className='cart-total';subtotal.textContent='฿'+money(Number(item.price)*Number(item.qty));
+        row.append(info,controls,subtotal);contents.append(row);
+      });
+      const total=document.createElement('div');total.className='cart-total';total.style.textAlign='right';total.style.borderTop='1px solid var(--line)';total.style.paddingTop='14px';total.textContent='ยอดรวม ฿'+money(cartItems.reduce((sum,item)=>sum+Number(item.price)*Number(item.qty),0));contents.append(total);
     }
-    function addToCart(){ cartQty += 1; renderCart(); document.getElementById('cartPanel').classList.add('open'); document.getElementById('cartPanel').scrollIntoView({behavior:'smooth',block:'nearest'}); }
-    function changeQty(amount){ cartQty = Math.max(0,cartQty+amount); renderCart(); }
-    function toggleCart(force){ const panel=document.getElementById('cartPanel'); if(typeof force==='boolean'){panel.classList.toggle('open',force);} else {panel.classList.toggle('open');} if(panel.classList.contains('open')) panel.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-  </script>
-</body>
+    function addToCart(){
+      const existing=cartItems.find(item=>item.name===merchessProduct.name&&Number(item.price)===merchessProduct.price);
+      if(existing){existing.qty=Number(existing.qty)+1;}else{cartItems.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name:merchessProduct.name,price:merchessProduct.price,qty:1});}
+      saveCart();document.getElementById('cartPanel').classList.add('open');document.getElementById('cartPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+    function changeQty(id,amount){cartItems=cartItems.map(item=>item.id===id?{...item,qty:Number(item.qty)+amount}:item).filter(item=>item.qty>0);saveCart();}
+    function toggleCart(force){const panel=document.getElementById('cartPanel');if(typeof force==='boolean'){panel.classList.toggle('open',force);}else{panel.classList.toggle('open');}if(panel.classList.contains('open'))panel.scrollIntoView({behavior:'smooth',block:'nearest'});}
+    window.addEventListener('storage',()=>{cartItems=readCart();renderCart();});
+    renderCart();
+  </script></body>
 </html>
