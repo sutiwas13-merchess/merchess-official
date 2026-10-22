@@ -91,6 +91,20 @@
     .cart-total{color:var(--gold2);font-weight:800;font-size:20px}
     .cart-empty{color:var(--muted);font-size:13px}
     .cart-note{color:#918b80;font-size:11px;margin-top:12px}
+    .product-admin-actions{display:none}
+    #managePanel.open~.cart-panel{}
+    .checkout{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+    .checkout h4{font-size:18px;margin:0 0 6px;color:var(--gold2)}
+    .checkout-intro{color:var(--muted);font-size:12px;margin:0 0 18px}
+    .checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .checkout label{display:block;color:#d8d0c0;font-size:12px;margin-bottom:12px}
+    .checkout input,.checkout textarea{display:block;width:100%;margin-top:6px;padding:13px 12px;border:1px solid #4c422e;border-radius:2px;background:#090909;color:var(--white);font:inherit;font-size:14px;outline:none}
+    .checkout input:focus,.checkout textarea:focus{border-color:var(--gold)}
+    .checkout textarea{min-height:84px;resize:vertical}
+    .order-summary{display:none;margin-top:16px;padding:16px;border:1px solid var(--line);background:#0b0b09;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;color:#e9e1d0}
+    .order-summary.show{display:block}
+    .checkout-help{font-size:11px;color:#918b80;margin-top:10px}
+    @media(max-width:720px){.checkout-grid{grid-template-columns:1fr;gap:0}.checkout{margin-top:20px}.checkout .btn{width:100%}}
     @media(max-width:720px){
       .wrap{width:min(100% - 30px,520px)}
       .nav{min-height:62px}
@@ -170,7 +184,24 @@
         <div class="section-head"><div class="eyebrow">Meet your signature</div><h2>MERCHESS Car Fragrance</h2><p>ความหอมที่เติมเต็มสไตล์การขับขี่ของคุณ</p></div>
         <div id="productGrid" class="product-grid"></div>
         <div id="managePanel" class="manage-panel"><div class="eyebrow">STORE MANAGEMENT</div><h3 id="manageTitle">เพิ่มสินค้าใหม่</h3><p class="cart-note">เพิ่ม แก้ไข ลบสินค้าและรูปภาพได้ที่นี่ ข้อมูลบันทึกในเบราว์เซอร์เครื่องนี้เท่านั้น</p><form id="productForm"><label>ชื่อสินค้า<input id="pName" required placeholder="ชื่อสินค้า"></label><label>รายละเอียดสินค้า<textarea id="pDesc" rows="2" placeholder="รายละเอียดสินค้า"></textarea></label><div class="row"><label>ราคาขาย (บาท)<input id="pPrice" type="number" min="0" required></label><label>ราคาเดิม (บาท)<input id="pOldPrice" type="number" min="0"></label></div><div class="row"><label>ป้ายสินค้า/กลิ่น<input id="pTags" placeholder="GREEN APPLE, SPORTY, 7 ML"></label><label>รูปภาพ<input id="pImage" type="file" accept="image/*"></label></div><div id="pPreviewWrap" style="display:none;margin:8px 0 14px"><img id="pPreview" alt="ตัวอย่างรูปสินค้า" style="max-width:150px;max-height:150px;object-fit:contain"><button class="btn btn-outline" id="removePImage" type="button">เอารูปออก</button></div><div class="manage-actions"><button class="btn btn-primary" id="saveProduct" type="submit">＋ บันทึกสินค้า</button><button class="btn btn-outline" id="cancelProduct" type="button">ยกเลิก</button></div><div id="manageStatus" class="cart-note" role="status"></div></form></div>
-        <div class="cart-panel" id="cartPanel" aria-live="polite"><div class="eyebrow">Your shopping cart</div><h3 style="margin:8px 0 18px">ตะกร้าสินค้าของคุณ</h3><div id="cartContents"><p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p></div><p class="cart-note">* ขณะนี้เป็นตะกร้าสำหรับเลือกสินค้า ยังไม่ได้เชื่อมระบบชำระเงินหรือจัดส่ง</p><a class="btn btn-outline" href="#product" onclick="toggleCart(false)">เลือกสินค้าต่อ</a></div>
+        <div class="cart-panel" id="cartPanel" aria-live="polite"><div class="eyebrow">Your shopping cart</div><h3 style="margin:8px 0 18px">ตะกร้าสินค้าของคุณ</h3><div id="cartContents"><p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p></div>
+          <div class="checkout">
+            <h4>ข้อมูลสำหรับจัดส่ง</h4>
+            <p class="checkout-intro">กรอกข้อมูลเพื่อสร้างสรุปคำสั่งซื้อ ตรวจสอบรายละเอียดก่อนส่งให้ร้านค้า</p>
+            <form id="checkoutForm">
+              <div class="checkout-grid">
+                <label>ชื่อ–นามสกุล *<input id="buyerName" name="buyerName" autocomplete="name" required maxlength="100" placeholder="ชื่อผู้รับสินค้า"></label>
+                <label>เบอร์โทรศัพท์ *<input id="buyerPhone" name="buyerPhone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" placeholder="08X-XXX-XXXX"></label>
+              </div>
+              <label>ที่อยู่จัดส่ง *<textarea id="buyerAddress" name="buyerAddress" autocomplete="street-address" required maxlength="500" placeholder="บ้านเลขที่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด และรหัสไปรษณีย์"></textarea></label>
+              <label>หมายเหตุถึงร้าน (ถ้ามี)<textarea id="buyerNote" name="buyerNote" maxlength="300" placeholder="เช่น ช่วงเวลาที่สะดวกรับสินค้า"></textarea></label>
+              <button class="btn btn-primary" type="submit">สรุปคำสั่งซื้อ ↗</button>
+            </form>
+            <div id="orderSummary" class="order-summary" role="status" aria-live="polite"></div>
+            <button id="copyOrder" class="btn btn-outline" type="button" style="display:none;margin-top:12px">คัดลอกสรุปคำสั่งซื้อ</button>
+            <p class="checkout-help">ระบบนี้ยังไม่มีฐานข้อมูลหรือส่งออเดอร์ถึงร้านอัตโนมัติ สรุปที่สร้างจะอยู่บนอุปกรณ์นี้ ให้คัดลอกแล้วส่งให้ร้านค้าเพื่อยืนยันออเดอร์</p>
+          </div>
+          <p class="cart-note">* ยอดรวมยังไม่รวมค่าจัดส่ง และยังไม่มีการชำระเงินในเว็บไซต์</p><a class="btn btn-outline" href="#product" onclick="toggleCart(false)">เลือกสินค้าต่อ</a></div>
       </div>
     </section>
     <section class="contact" id="contact">
@@ -188,7 +219,7 @@
       {id:'merlush',name:'น้ำหอมรถยนต์ MERCHESS กลิ่น MERLUSH',description:'กลิ่นละมุน สดชื่น สร้างบรรยากาศผ่อนคลายในทุกเส้นทาง ขนาด 7 ml',price:189,oldPrice:229,tags:'MERLUSH, FRESH, 7 ML',image:''}
     ];
     const CART_KEY='merchessCartV1';
-    let products=readProducts(),editingProductId=null,productImage='';
+    let products=readProducts(),editingProductId=null,productImage='',cartItems=readCart();
     function readProducts(){try{const v=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||'null');if(!Array.isArray(v))return defaultProducts.map(p=>({...p}));const saved=v.slice();defaultProducts.forEach(p=>{if(!saved.some(x=>x.id===p.id))saved.push({...p})});return saved}catch(e){return defaultProducts.map(p=>({...p}))}}
     function saveProducts(){localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));renderProducts()}
     function toggleManager(){const p=document.getElementById('managePanel');p.classList.toggle('open');if(p.classList.contains('open'))p.scrollIntoView({behavior:'smooth',block:'start'})}
@@ -226,6 +257,29 @@
     function addToCart(productId){const product=products.find(p=>p.id===productId);if(!product)return;const existing=cartItems.find(item=>item.productId===product.id);if(existing){existing.qty=Number(existing.qty)+1;existing.name=product.name;existing.price=product.price;}else{cartItems.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),productId:product.id,name:product.name,price:product.price,qty:1,image:product.image||''});}saveCart();document.getElementById('cartPanel').classList.add('open');document.getElementById('cartPanel').scrollIntoView({behavior:'smooth',block:'nearest'});}
     function changeQty(id,amount){cartItems=cartItems.map(item=>item.id===id?{...item,qty:Number(item.qty)+amount}:item).filter(item=>item.qty>0);saveCart();}
     function toggleCart(force){const panel=document.getElementById('cartPanel');if(typeof force==='boolean'){panel.classList.toggle('open',force);}else{panel.classList.toggle('open');}if(panel.classList.contains('open'))panel.scrollIntoView({behavior:'smooth',block:'nearest'});}
+    function buildOrderSummary(e){
+      e.preventDefault();
+      if(!cartItems.length){alert('กรุณาเพิ่มสินค้าในตะกร้าก่อน');return}
+      const name=document.getElementById('buyerName').value.trim();
+      const phone=document.getElementById('buyerPhone').value.trim();
+      const address=document.getElementById('buyerAddress').value.trim();
+      const note=document.getElementById('buyerNote').value.trim();
+      if(!name||!phone||!address)return;
+      const lines=cartItems.map((item,i)=>(i+1)+'. '+item.name+' × '+item.qty+' = ฿'+money(Number(item.price)*Number(item.qty)));
+      const total=cartItems.reduce((sum,item)=>sum+Number(item.price)*Number(item.qty),0);
+      const summary=['MERCHESS — สรุปคำสั่งซื้อ','',...lines,'','ยอดรวมสินค้า: ฿'+money(total),'ค่าจัดส่ง: รอยืนยันกับร้านค้า','ยอดชำระสุดท้าย: รอยืนยันกับร้านค้า','','ชื่อผู้รับ: '+name,'เบอร์โทร: '+phone,'ที่อยู่จัดส่ง: '+address,...(note?['หมายเหตุ: '+note]:[]),'','โปรดติดต่อกลับเพื่อยืนยันสินค้า ค่าจัดส่ง และวิธีชำระเงิน'].join('\n');
+      const box=document.getElementById('orderSummary');
+      box.textContent=summary;
+      box.classList.add('show');
+      document.getElementById('copyOrder').style.display='inline-flex';
+      box.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+    document.getElementById('checkoutForm').addEventListener('submit',buildOrderSummary);
+    document.getElementById('copyOrder').addEventListener('click',async()=>{
+      const text=document.getElementById('orderSummary').textContent;
+      try{await navigator.clipboard.writeText(text);document.getElementById('copyOrder').textContent='คัดลอกแล้ว ✓'}
+      catch(e){const range=document.createRange();range.selectNodeContents(document.getElementById('orderSummary'));const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.getElementById('copyOrder').textContent='เลือกข้อความแล้ว — กดคัดลอก'}
+    });
     window.addEventListener('storage',()=>{cartItems=readCart();renderCart();});
     renderProducts();renderCart();
   </script></body>
