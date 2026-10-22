@@ -62,7 +62,7 @@
     .feature h3{font-size:17px;margin:18px 0 7px}
     .feature p{font-size:13px;color:#a9a49a;margin:0}
     .product{background:linear-gradient(180deg,#0b0b0a,#11100d 50%,#090909)}
-    .product-card{max-width:850px;margin:auto;border:1px solid var(--line);display:grid;grid-template-columns:.8fr 1.2fr;background:rgba(255,255,255,.02)}
+    .product-card{max-width:850px;margin:auto;border:1px solid var(--line);display:grid;grid-template-columns:.8fr 1.2fr;background:rgba(255,255,255,.02)}.product-grid{display:grid;gap:18px}.manage-panel{display:none;max-width:850px;margin:24px auto;border:1px solid var(--line);background:#11100d;padding:20px}.manage-panel.open{display:block}.manage-panel input,.manage-panel textarea{display:block;width:100%;margin:5px 0 14px;padding:12px;border:1px solid #48402e;background:#090909;color:var(--white);font:inherit}.manage-panel label{display:block;font-size:12px;color:var(--muted)}.manage-actions,.product-admin-actions{display:flex;gap:8px;flex-wrap:wrap}.product-image{width:100%;max-height:300px;object-fit:contain;padding:18px}.product-admin-actions{margin-top:12px}.product-admin-actions button{font-size:11px;padding:8px 10px}
     .product-visual{min-height:290px;display:grid;place-items:center;background:radial-gradient(circle,rgba(215,181,109,.12),transparent 68%)}
     .mini-bottle{width:105px;height:165px;position:relative;background:linear-gradient(100deg,#090909,#333026 35%,#111);border:1px solid #a9894e;border-radius:7px 7px 12px 12px;box-shadow:12px 20px 28px #000}
     .mini-bottle:before{content:"";position:absolute;width:44px;height:18px;top:-17px;left:30px;background:linear-gradient(90deg,#24221b,#aa8b4d,#191710);border:1px solid #9d7d43}
@@ -129,7 +129,7 @@
     <div class="wrap nav">
       <a class="brand" href="#home" aria-label="MERCHESS หน้าแรก">MERCHESS<small>PREMIUM AUTOMOTIVE FRAGRANCE</small></a>
       <nav class="navlinks" aria-label="เมนูหลัก">
-        <a href="#story">จุดเด่น</a><a href="#product">สินค้า</a><a class="navcta" href="#contact">ติดต่อเรา</a><button class="cart-trigger" type="button" onclick="toggleCart()" aria-label="เปิดตะกร้าสินค้า">🛒 ตะกร้า <span class="cart-count" id="cartCount">0</span></button>
+        <a href="#story">จุดเด่น</a><a href="#product">สินค้า</a><button class="cart-trigger" type="button" onclick="toggleManager()" style="padding:8px 10px;font-size:11px">⚙ จัดการสินค้า</button><a class="navcta" href="#contact">ติดต่อเรา</a><button class="cart-trigger" type="button" onclick="toggleCart()" aria-label="เปิดตะกร้าสินค้า">🛒 ตะกร้า <span class="cart-count" id="cartCount">0</span></button>
       </nav>
     </div>
   </header>
@@ -168,10 +168,8 @@
     <section class="product" id="product">
       <div class="wrap">
         <div class="section-head"><div class="eyebrow">Meet your signature</div><h2>MERCHESS Car Fragrance</h2><p>ความหอมที่เติมเต็มสไตล์การขับขี่ของคุณ</p></div>
-        <div class="product-card">
-          <div class="product-visual"><div class="mini-bottle" role="img" aria-label="กราฟิกขวด MERCHESS"></div></div>
-          <div class="product-info"><div class="eyebrow">สินค้าแนะนำ • ITEM 01</div><h3>น้ำหอมรถยนต์ MERCHESS</h3><p><strong style="color:var(--gold2)">กลิ่น MERMAXSPORT</strong></p><p>น้ำหอมปรับอากาศรถยนต์ MERCHESS กลิ่น MERMAXSPORT ขนาด 7 ml</p><div><span class="pill">GREEN APPLE</span><span class="pill">SPORTY</span><span class="pill">7 ML</span></div><div class="product-price">฿189 <small><s>฿229</s> ราคาพิเศษ</small></div><button class="btn btn-primary" type="button" onclick="addToCart()">＋ เพิ่มลงตะกร้า</button></div>
-        </div>
+        <div id="productGrid" class="product-grid"></div>
+        <div id="managePanel" class="manage-panel"><div class="eyebrow">STORE MANAGEMENT</div><h3 id="manageTitle">เพิ่มสินค้าใหม่</h3><p class="cart-note">เพิ่ม แก้ไข ลบสินค้าและรูปภาพได้ที่นี่ ข้อมูลบันทึกในเบราว์เซอร์เครื่องนี้เท่านั้น</p><form id="productForm"><label>ชื่อสินค้า<input id="pName" required placeholder="ชื่อสินค้า"></label><label>รายละเอียดสินค้า<textarea id="pDesc" rows="2" placeholder="รายละเอียดสินค้า"></textarea></label><div class="row"><label>ราคาขาย (บาท)<input id="pPrice" type="number" min="0" required></label><label>ราคาเดิม (บาท)<input id="pOldPrice" type="number" min="0"></label></div><div class="row"><label>ป้ายสินค้า/กลิ่น<input id="pTags" placeholder="GREEN APPLE, SPORTY, 7 ML"></label><label>รูปภาพ<input id="pImage" type="file" accept="image/*"></label></div><div id="pPreviewWrap" style="display:none;margin:8px 0 14px"><img id="pPreview" alt="ตัวอย่างรูปสินค้า" style="max-width:150px;max-height:150px;object-fit:contain"><button class="btn btn-outline" id="removePImage" type="button">เอารูปออก</button></div><div class="manage-actions"><button class="btn btn-primary" id="saveProduct" type="submit">＋ บันทึกสินค้า</button><button class="btn btn-outline" id="cancelProduct" type="button">ยกเลิก</button></div><div id="manageStatus" class="cart-note" role="status"></div></form></div>
         <div class="cart-panel" id="cartPanel" aria-live="polite"><div class="eyebrow">Your shopping cart</div><h3 style="margin:8px 0 18px">ตะกร้าสินค้าของคุณ</h3><div id="cartContents"><p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p></div><p class="cart-note">* ขณะนี้เป็นตะกร้าสำหรับเลือกสินค้า ยังไม่ได้เชื่อมระบบชำระเงินหรือจัดส่ง</p><a class="btn btn-outline" href="#product" onclick="toggleCart(false)">เลือกสินค้าต่อ</a></div>
       </div>
     </section>
@@ -183,9 +181,19 @@
   <div class="mobile-bar"><a class="btn btn-outline" href="#product">ดูสินค้า</a><a class="btn btn-primary" href="#contact">ติดต่อ MERCHESS</a></div>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-    const CART_KEY = 'merchessCartV1';
-    const merchessProduct = {name:'น้ำหอมรถยนต์ MERCHESS กลิ่น MERMAXSPORT', price:189};
-    let cartItems = readCart();
+    const PRODUCTS_KEY='merchessProductsV1';
+    const defaultProducts=[{id:'mermaxsport',name:'น้ำหอมรถยนต์ MERCHESS กลิ่น MERMAXSPORT',description:'น้ำหอมปรับอากาศรถยนต์ MERCHESS กลิ่น MERMAXSPORT ขนาด 7 ml',price:189,oldPrice:229,tags:'GREEN APPLE, SPORTY, 7 ML',image:''}];
+    let products=readProducts(),editingProductId=null,productImage='';
+    function readProducts(){try{const v=JSON.parse(localStorage.getItem(PRODUCTS_KEY)||'null');return Array.isArray(v)?v:defaultProducts.slice()}catch(e){return defaultProducts.slice()}}
+    function saveProducts(){localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));renderProducts()}
+    function toggleManager(){const p=document.getElementById('managePanel');p.classList.toggle('open');if(p.classList.contains('open'))p.scrollIntoView({behavior:'smooth',block:'start'})}
+    function renderProducts(){const grid=document.getElementById('productGrid');grid.innerHTML='';products.forEach((p,i)=>{const card=document.createElement('article');card.className='product-card';const visual=document.createElement('div');visual.className='product-visual';if(p.image){const img=document.createElement('img');img.className='product-image';img.src=p.image;img.alt=p.name;visual.append(img)}else{const bottle=document.createElement('div');bottle.className='mini-bottle';bottle.setAttribute('role','img');bottle.setAttribute('aria-label','กราฟิกขวด MERCHESS');visual.append(bottle)}const info=document.createElement('div');info.className='product-info';const label=document.createElement('div');label.className='eyebrow';label.textContent='สินค้าแนะนำ • ITEM '+String(i+1).padStart(2,'0');const title=document.createElement('h3');title.textContent=p.name;const desc=document.createElement('p');desc.textContent=p.description||'';const tags=document.createElement('div');String(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).forEach(x=>{const t=document.createElement('span');t.className='pill';t.textContent=x;tags.append(t)});const price=document.createElement('div');price.className='product-price';price.textContent='฿'+money(p.price)+' ';if(Number(p.oldPrice)>Number(p.price)){const old=document.createElement('small');old.textContent='฿'+money(p.oldPrice)+' ราคาพิเศษ';price.append(old)}const add=document.createElement('button');add.className='btn btn-primary';add.type='button';add.textContent='＋ เพิ่มลงตะกร้า';add.onclick=()=>addToCart(p.id);const admin=document.createElement('div');admin.className='product-admin-actions';const edit=document.createElement('button');edit.className='btn btn-outline';edit.type='button';edit.textContent='แก้ไขสินค้า';edit.onclick=()=>editProduct(p.id);const del=document.createElement('button');del.className='btn btn-outline';del.type='button';del.textContent='ลบสินค้า';del.onclick=()=>{if(confirm('ลบสินค้า '+p.name+' ?')){products=products.filter(x=>x.id!==p.id);saveProducts()}};admin.append(edit,del);info.append(label,title,desc,tags,price,add,admin);card.append(visual,info);grid.append(card)})}
+    function resetProductForm(){editingProductId=null;productImage='';document.getElementById('productForm').reset();document.getElementById('pImage').value='';document.getElementById('pPreviewWrap').style.display='none';document.getElementById('manageTitle').textContent='เพิ่มสินค้าใหม่';document.getElementById('saveProduct').textContent='＋ บันทึกสินค้า'}
+    function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;editingProductId=id;productImage=p.image||'';document.getElementById('pName').value=p.name;document.getElementById('pDesc').value=p.description||'';document.getElementById('pPrice').value=p.price;document.getElementById('pOldPrice').value=p.oldPrice||'';document.getElementById('pTags').value=p.tags||'';document.getElementById('pImage').value='';document.getElementById('pPreviewWrap').style.display=productImage?'flex':'none';if(productImage)document.getElementById('pPreview').src=productImage;document.getElementById('manageTitle').textContent='แก้ไขสินค้า';document.getElementById('saveProduct').textContent='บันทึกการแก้ไข';document.getElementById('managePanel').classList.add('open');document.getElementById('managePanel').scrollIntoView({behavior:'smooth',block:'start'})}
+    document.getElementById('pImage').addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('กรุณาเลือกไฟล์รูปภาพ');e.target.value='';return}if(file.size>1.5*1024*1024){alert('รูปต้องมีขนาดไม่เกิน 1.5 MB');e.target.value='';return}const reader=new FileReader();reader.onload=()=>{productImage=String(reader.result||'');document.getElementById('pPreview').src=productImage;document.getElementById('pPreviewWrap').style.display='flex'};reader.readAsDataURL(file)});
+    document.getElementById('removePImage').onclick=()=>{productImage='';document.getElementById('pImage').value='';document.getElementById('pPreviewWrap').style.display='none'};
+    document.getElementById('cancelProduct').onclick=resetProductForm;
+    document.getElementById('productForm').addEventListener('submit',e=>{e.preventDefault();const p={id:editingProductId||('p'+Date.now().toString(36)),name:document.getElementById('pName').value.trim(),description:document.getElementById('pDesc').value.trim(),price:Number(document.getElementById('pPrice').value),oldPrice:Number(document.getElementById('pOldPrice').value)||0,tags:document.getElementById('pTags').value.trim(),image:productImage};if(!p.name||!Number.isFinite(p.price)||p.price<0)return;if(editingProductId)products=products.map(x=>x.id===editingProductId?p:x);else products.push(p);saveProducts();document.getElementById('manageStatus').textContent='บันทึกสินค้าแล้ว';resetProductForm()});
     function readCart(){ try { const data=JSON.parse(localStorage.getItem(CART_KEY)||'[]'); return Array.isArray(data)?data:[]; } catch(e){ return []; } }
     function saveCart(){ localStorage.setItem(CART_KEY,JSON.stringify(cartItems)); renderCart(); }
     function money(n){ return Number(n||0).toLocaleString('th-TH',{maximumFractionDigits:2}); }
@@ -210,14 +218,10 @@
       });
       const total=document.createElement('div');total.className='cart-total';total.style.textAlign='right';total.style.borderTop='1px solid var(--line)';total.style.paddingTop='14px';total.textContent='ยอดรวม ฿'+money(cartItems.reduce((sum,item)=>sum+Number(item.price)*Number(item.qty),0));contents.append(total);
     }
-    function addToCart(){
-      const existing=cartItems.find(item=>item.name===merchessProduct.name&&Number(item.price)===merchessProduct.price);
-      if(existing){existing.qty=Number(existing.qty)+1;}else{cartItems.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name:merchessProduct.name,price:merchessProduct.price,qty:1});}
-      saveCart();document.getElementById('cartPanel').classList.add('open');document.getElementById('cartPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
-    }
+    function addToCart(productId){const product=products.find(p=>p.id===productId);if(!product)return;const existing=cartItems.find(item=>item.productId===product.id);if(existing){existing.qty=Number(existing.qty)+1;existing.name=product.name;existing.price=product.price;}else{cartItems.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),productId:product.id,name:product.name,price:product.price,qty:1,image:product.image||''});}saveCart();document.getElementById('cartPanel').classList.add('open');document.getElementById('cartPanel').scrollIntoView({behavior:'smooth',block:'nearest'});}
     function changeQty(id,amount){cartItems=cartItems.map(item=>item.id===id?{...item,qty:Number(item.qty)+amount}:item).filter(item=>item.qty>0);saveCart();}
     function toggleCart(force){const panel=document.getElementById('cartPanel');if(typeof force==='boolean'){panel.classList.toggle('open',force);}else{panel.classList.toggle('open');}if(panel.classList.contains('open'))panel.scrollIntoView({behavior:'smooth',block:'nearest'});}
     window.addEventListener('storage',()=>{cartItems=readCart();renderCart();});
-    renderCart();
+    renderProducts();renderCart();
   </script></body>
 </html>
