@@ -79,6 +79,18 @@
     .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
     .foot .brand{font-size:17px}
     .mobile-bar{display:none}
+    .cart-trigger{position:relative;border:1px solid var(--gold);background:transparent;color:var(--gold2);padding:9px 12px;font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}
+    .cart-count{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:50%;background:var(--gold2);color:#17130b;font-weight:800;margin-left:5px;font-size:11px}
+    .product-price{font-size:27px;font-weight:800;color:var(--gold2);margin:10px 0}
+    .product-price small{font-size:12px;color:#a9a49a;font-weight:400}
+    .cart-panel{display:none;margin:22px auto 0;max-width:850px;border:1px solid var(--line);background:#11100d;padding:22px}
+    .cart-panel.open{display:block}
+    .cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .cart-actions{display:flex;align-items:center;gap:8px}
+    .qty-btn{width:34px;height:34px;border:1px solid var(--line);background:#181713;color:var(--gold2);font-size:18px;cursor:pointer}
+    .cart-total{color:var(--gold2);font-weight:800;font-size:20px}
+    .cart-empty{color:var(--muted);font-size:13px}
+    .cart-note{color:#918b80;font-size:11px;margin-top:12px}
     @media(max-width:720px){
       .wrap{width:min(100% - 30px,520px)}
       .nav{min-height:62px}
@@ -117,7 +129,7 @@
     <div class="wrap nav">
       <a class="brand" href="#home" aria-label="MERCHESS หน้าแรก">MERCHESS<small>PREMIUM AUTOMOTIVE FRAGRANCE</small></a>
       <nav class="navlinks" aria-label="เมนูหลัก">
-        <a href="#story">จุดเด่น</a><a href="#product">สินค้า</a><a class="navcta" href="#contact">ติดต่อเรา</a>
+        <a href="#story">จุดเด่น</a><a href="#product">สินค้า</a><a class="navcta" href="#contact">ติดต่อเรา</a><button class="cart-trigger" type="button" onclick="toggleCart()" aria-label="เปิดตะกร้าสินค้า">🛒 ตะกร้า <span class="cart-count" id="cartCount">0</span></button>
       </nav>
     </div>
   </header>
@@ -158,8 +170,9 @@
         <div class="section-head"><div class="eyebrow">Meet your signature</div><h2>MERCHESS Car Fragrance</h2><p>ความหอมที่เติมเต็มสไตล์การขับขี่ของคุณ</p></div>
         <div class="product-card">
           <div class="product-visual"><div class="mini-bottle" role="img" aria-label="กราฟิกขวด MERCHESS"></div></div>
-          <div class="product-info"><div class="eyebrow">Premium collection</div><h3>Make every drive yours.</h3><p>พบกับน้ำหอมปรับอากาศรถยนต์ MERCHESS ดีไซน์พรีเมียมที่ตั้งใจออกแบบมาเพื่อคนที่ใส่ใจทุกดีเทล</p><div><span class="pill">BLACK & GOLD</span><span class="pill">SPORT LUXURY</span><span class="pill">SIGNATURE STYLE</span></div><p>สนใจสินค้า กลิ่น และรายละเอียดการสั่งซื้อ ติดต่อทีมงานของเราได้โดยตรง</p><a class="btn btn-primary" href="#contact">สอบถามสินค้า <span aria-hidden="true">↗</span></a></div>
+          <div class="product-info"><div class="eyebrow">สินค้าแนะนำ • ITEM 01</div><h3>น้ำหอมรถยนต์ MERCHESS</h3><p><strong style="color:var(--gold2)">กลิ่น MERMAXSPORT</strong></p><p>น้ำหอมปรับอากาศรถยนต์ MERCHESS กลิ่น MERMAXSPORT ขนาด 7 ml</p><div><span class="pill">GREEN APPLE</span><span class="pill">SPORTY</span><span class="pill">7 ML</span></div><div class="product-price">฿189 <small><s>฿229</s> ราคาพิเศษ</small></div><button class="btn btn-primary" type="button" onclick="addToCart()">＋ เพิ่มลงตะกร้า</button></div>
         </div>
+        <div class="cart-panel" id="cartPanel" aria-live="polite"><div class="eyebrow">Your shopping cart</div><h3 style="margin:8px 0 18px">ตะกร้าสินค้าของคุณ</h3><div id="cartContents"><p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p></div><p class="cart-note">* ขณะนี้เป็นตะกร้าสำหรับเลือกสินค้า ยังไม่ได้เชื่อมระบบชำระเงินหรือจัดส่ง</p><a class="btn btn-outline" href="#product" onclick="toggleCart(false)">เลือกสินค้าต่อ</a></div>
       </div>
     </section>
     <section class="contact" id="contact">
@@ -168,6 +181,19 @@
   </main>
   <footer><div class="wrap foot"><a class="brand" href="#home">MERCHESS</a><span>© <span id="year">2026</span> MERCHESS. All rights reserved.</span><span>Premium Automotive Fragrance</span></div></footer>
   <div class="mobile-bar"><a class="btn btn-outline" href="#product">ดูสินค้า</a><a class="btn btn-primary" href="#contact">ติดต่อ MERCHESS</a></div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const merchessProduct = {name:'น้ำหอมรถยนต์ MERCHESS กลิ่น MERMAXSPORT', price:189};
+    let cartQty = 0;
+    function renderCart(){
+      document.getElementById('cartCount').textContent = cartQty;
+      const contents = document.getElementById('cartContents');
+      if(cartQty === 0){ contents.innerHTML = '<p class="cart-empty">ยังไม่มีสินค้าในตะกร้า</p>'; return; }
+      contents.innerHTML = '<div class="cart-row"><div><strong>'+merchessProduct.name+'</strong><p class="cart-empty">฿'+merchessProduct.price+' / ชิ้น</p></div><div class="cart-actions"><button class="qty-btn" type="button" onclick="changeQty(-1)" aria-label="ลดจำนวน">−</button><strong>'+cartQty+'</strong><button class="qty-btn" type="button" onclick="changeQty(1)" aria-label="เพิ่มจำนวน">＋</button></div><div class="cart-total">รวม ฿'+(cartQty*merchessProduct.price).toLocaleString('th-TH')+'</div></div>';
+    }
+    function addToCart(){ cartQty += 1; renderCart(); document.getElementById('cartPanel').classList.add('open'); document.getElementById('cartPanel').scrollIntoView({behavior:'smooth',block:'nearest'}); }
+    function changeQty(amount){ cartQty = Math.max(0,cartQty+amount); renderCart(); }
+    function toggleCart(force){ const panel=document.getElementById('cartPanel'); if(typeof force==='boolean'){panel.classList.toggle('open',force);} else {panel.classList.toggle('open');} if(panel.classList.contains('open')) panel.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  </script>
 </body>
 </html>
